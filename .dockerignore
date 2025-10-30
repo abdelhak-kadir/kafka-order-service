@@ -1,0 +1,11 @@
+target/
+.mvn/
+*.iml
+.idea/
+.vscode/
+*.log
+.DS_Store
+*.class
+*.jar
+!target/*.jar
+node_modules/
