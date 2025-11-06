@@ -7,10 +7,6 @@ WORKDIR /app
 # Copy only the pom.xml first (to cache dependencies)
 COPY pom.xml .
 
-# Use local Maven repository cache (optional but very effective)
-# This will speed up dependency downloads on rebuilds
-VOLUME /root/.m2
-
 # Download dependencies
 RUN mvn dependency:go-offline -B
 
@@ -24,6 +20,9 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
+
+# Install curl for healthcheck (Alpine doesn't have wget by default)
+RUN apk add --no-cache curl
 
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/*.jar app.jar
